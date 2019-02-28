@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+
+    <title>Flasky</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/ionicons/css/ionicons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap-slider/slider.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/pace/pace.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap-switch/bootstrap-switch.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/select2/select2.min.css') }}">
+    {% block css %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/adminlte/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/adminlte/css/skins/skin-blue.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <!--[if lt IE 9]>
+    <script src="plugins/html5shiv.min.js"></script>
+    <script src="plugins/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+      <header class="main-header row">
+        <a href="{{ url_for('main.index') }}" class="logo">
+            <span class="logo-lg"><b>博客之家</b></span>
+            <span class="logo=mini">B</span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            {% if current_user.is_authenticated %}
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown pull-right" style="margin-right: 50px;">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      {% if current_user.rel_avatar %}
+                      <img class="img-rounded profile-thumbnail" src="{{ current_user.rel_avatar }}" style="width: 18px; height: 18px">
+                      {% else %}
+                      <img class="img-rounded profile-thumbnail" src="{{ current_user.gravatar(size=18) }}">
+                      {% endif %}
+                      <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ current_user.username }}</b><span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{{ url_for('main.user', username=current_user.username) }}">个人资料</a></li>
+                    <li><a href="#">管理文章</a></li>
+                    <li><a href="#">评论管理</a></li>
+                    <li role="separator" class="divider"></li>
+                  </ul>
+                    <li><a href="{{ url_for('auth.logout') }}" class="pull-right">退出</a></li>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="nav navbar-nav navbar-right col-md-2">
+                <li><a href="{{ url_for('auth.login') }}" class="pull-right">登录</a>
+                    <a href="{{ url_for('auth.register') }}" class="pull-right">注册</a></li>
+
+            </ul>
+            {% endif %}
+        </nav>
+    </header>
+
+</div>
+
+{% block content %}
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{message}}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% if current_user.if_authenticated %}
+<li>
+    <a href="{{ url_for('main.user', username=current_user.username) }}">
+        Profile
+    </a>
+</li>
+{% endif %}
+
+{% endblock %}
+
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/jquery-2.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/fastclick/fastclick.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/bootstrap-slider/bootstrap-slider.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/pace/pace.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/bootstrap-switch/bootstrap-switch.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/select2/select2.full.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/adminlte/js/app.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/global.js') }}"></script>
+
+    {{ moment.include_moment() }}
+    {% endblock %}
+
+</body>

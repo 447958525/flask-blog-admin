@@ -1,0 +1,13 @@
+親愛的 {{ user.username }},
+
+    歡迎來到Flasky！
+
+    要確認您的賬戶，請點擊下面的鏈接：
+
+    {{ url_for('auth.confirm', token=token, _external=True) }}
+
+    真誠的，
+
+    Flasky團隊
+
+    注意：此郵件回復無效。

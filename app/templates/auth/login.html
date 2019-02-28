@@ -1,0 +1,79 @@
+{#
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flasky - Login{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>用户登录</h1>
+</div>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+</div>
+<p>
+    New user?
+    <a href="{{ url_for('auth.register') }}">
+        Click here to register
+    </a>
+</p>
+{% endblock %}
+#}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>系统登录</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="hold-transition login-page">
+<div  class="login-box">
+    <div class="login-logo">
+        <b>用户登录</b>
+    </div>
+    <div class="login-box-body">
+        <p class="login-box-msg">请输入邮箱及密码</p>
+        <form method="post">
+            {{ form.hidden_tag()}}
+            <div class="form-group has-feedback">
+                {{ form.email(class_="form-control",placeholder="邮箱名") }}
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                {{ form.password(class_="form-control",placeholder="密码") }}
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            <div class="row">
+                <div class="col-xs-5">
+                    <div class="checkbox icheck">
+                        <label>
+                            {{ form.remember_me() }}
+                            {{form.remember_me.label}}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    {{ form.submit(class_="btn btn-success btn-block btn-flat") }}
+                </div>
+                <div class="col-xs-3" style="margin0top: 9px;">
+                    <a href="{{ url_for('auth.register') }}"><b>没注册?点这里</b></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/jquery-2.2.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</body>
+</html>

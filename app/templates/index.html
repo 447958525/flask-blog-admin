@@ -1,0 +1,53 @@
+{% extends "base1.html"%}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Flasky{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>
+        欢迎你,
+        {% if current_user.is_authenticated %}
+            {{ current_user.username }}
+        {% else %}
+            Stranger
+        {% endif %}!
+    </h1>
+</div>
+
+<div>
+    {% if current_user.can(Permission.WRITE_ARTICLES) %}
+    {{ wtf.quick_form(form) }}
+    {% endif %}
+</div>
+<div>
+
+   {# 幻灯片 {% include 'slide.html' %} #}
+</div>
+<div class="post-tabs">
+    <ul class="nav nav-tabs">
+        <li{% if not show_followed %} class="active"{% endif %}><a href="{{ url_for('main.show_all') }}">全部文章</a></li>
+        {% if current_user.is_authenticated %}
+        <li{% if show_followed %} class="active"{% endif %}><a href="{{ url_for('main.show_followed') }}">关注的文章</a></li>
+        {% endif %}
+    </ul>
+    {% include '_posts.html' %}
+</div>
+
+
+
+{% if pagination %}
+<div class="pagination pull-right">
+    {{ macros.pagination_widget(pagination, 'main.index') }}
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
